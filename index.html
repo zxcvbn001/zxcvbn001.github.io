@@ -239,6 +239,42 @@
 <li>主链只需验证该证明的合法性，无需重新执行交易，<strong>立即确认结果</strong>，消除等待时间</li>
 </ul>
 <p><img src="https://raw.githubusercontent.com/zxcvbn001/BlogPic/img/img/20250326221618547.png"></p>
+<h2 id="核心流程"><a href="#核心流程" class="headerlink" title="核心流程"></a><strong>核心流程</strong></h2><ol>
+<li><strong>交易打包（Sequencer）</strong>：<ul>
+<li>链下 Sequencer（排序器）收集用户交易，按顺序打包成批次（Batch）。</li>
+<li><strong>关键要求</strong>：Sequencer 必须将原始交易数据（或压缩数据）提交到主链，确保<strong>数据可用性</strong>（Data Availability）。</li>
+</ul>
+</li>
+<li><strong>生成零知识证明（Prover）</strong>：<ul>
+<li>链下 Prover（证明节点）为每个交易批次生成一个<strong>零知识证明（ZKP）</strong>，证明所有交易均满足以下条件：<ul>
+<li>每笔交易的签名合法（发送者身份正确）。</li>
+<li>发送者余额充足（防止双花）。</li>
+<li>状态转换符合协议规则（例如转账后余额正确更新）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>链上验证（主链合约）</strong>：<ul>
+<li>主链上的智能合约接收 ZKP 和交易批次数据，<strong>仅验证证明的有效性</strong>（无需执行交易）。</li>
+<li>若证明有效，主链接受该批次交易，并更新 Rollup 状态根（全局状态的加密摘要）</li>
+</ul>
+</li>
+</ol>
+<h2 id="如何确保-Sequencer-不作恶？"><a href="#如何确保-Sequencer-不作恶？" class="headerlink" title="如何确保 Sequencer 不作恶？"></a><strong>如何确保 Sequencer 不作恶？</strong></h2><p>无论是 ZK-Rollup 还是 Optimistic Rollup，Sequencer 的潜在作恶行为通过以下机制约束：</p>
+<ol>
+<li><strong>抵押与惩罚</strong>：<ul>
+<li>Sequencer 需抵押资产，若提交非法交易，抵押金将被罚没。</li>
+</ul>
+</li>
+<li><strong>去中心化 Sequencer</strong>：<ul>
+<li>多个 Sequencer 轮流出块，降低单点作恶风险（如 StarkNet 的去中心化排序器计划）。</li>
+</ul>
+</li>
+<li><strong>强制交易提交</strong>：<ul>
+<li>用户可将交易直接提交到主链，绕过作恶的 Sequencer（如 Optimism 的“逃生舱”机制</li>
+</ul>
+</li>
+</ol>
 
       
 
