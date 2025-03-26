@@ -165,6 +165,80 @@
 <p><img src="https://raw.githubusercontent.com/zxcvbn001/BlogPic/img/img/20250325223939631.png"></p>
 <p>因为该区块hash变了之后，后续的hash校验不通过了</p>
 <h2 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h2><p>每个节点都有很多个区块 有很多节点</p>
+<h1 id="L1和L2"><a href="#L1和L2" class="headerlink" title="L1和L2"></a>L1和L2</h1><p>L1: 区块链基础 比如btc eth solana这些链</p>
+<p>L2: 运行在L1上的应用程序，比如chinalink uniswap</p>
+<h1 id="零知识证明（ZKP）"><a href="#零知识证明（ZKP）" class="headerlink" title="零知识证明（ZKP）"></a>零知识证明（ZKP）</h1><p>零知识证明（Zero-Knowledge Proof, ZKP）是一种密码学技术，允许一方向另一方证明某个声明的真实性，<strong>而无需透露任何额外信息</strong>。其核心在于，证明者（Prover）能让验证者（Verifier）确信某个事实成立，但不会泄露关于该事实的具体内容。</p>
+<h2 id="1-核心概念"><a href="#1-核心概念" class="headerlink" title="1. 核心概念"></a><strong>1. 核心概念</strong></h2><ul>
+<li><strong>目标</strong>：在不泄露秘密信息的前提下，证明某件事的真实性。</li>
+<li><strong>经典例子</strong>：<br><em>假设你有一个带密码的保险箱，想向朋友证明你知道密码，但不想直接告诉他密码。零知识证明允许你通过一系列操作（例如打开保险箱但不展示密码输入过程），让朋友确信你知道密码，而无需透露密码本身。</em></li>
+</ul>
+<h2 id="2-三大核心属性"><a href="#2-三大核心属性" class="headerlink" title="2. 三大核心属性"></a><strong>2. 三大核心属性</strong></h2><p>零知识证明必须满足以下三个关键性质：</p>
+<ol>
+<li><strong>完备性（Completeness）</strong><ul>
+<li><em>如果声明为真</em>，诚实的证明者能让验证者确信其真实性。</li>
+</ul>
+</li>
+<li><strong>可靠性（Soundness）</strong><ul>
+<li><em>如果声明为假</em>，证明者几乎无法欺骗验证者接受它。</li>
+</ul>
+</li>
+<li><strong>零知识性（Zero-Knowledge）</strong><ul>
+<li>验证过程<strong>不会泄露任何额外信息</strong>，除了声明本身的真实性。</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-工作原理（以交互式为例）"><a href="#3-工作原理（以交互式为例）" class="headerlink" title="3. 工作原理（以交互式为例）"></a><strong>3. 工作原理（以交互式为例）</strong></h2><p>零知识证明最初是交互式的，需多次信息交换。例如：</p>
+<ol>
+<li><strong>挑战-响应机制</strong>：<ul>
+<li>验证者提出随机挑战（如“请用密码打开保险箱左侧抽屉”）。</li>
+<li>证明者完成挑战，但操作方式与密码相关却无需直接展示密码。</li>
+<li>重复多次后，验证者统计成功概率，若足够高则相信证明者。</li>
+</ul>
+</li>
+<li><strong>数学实现</strong>：<ul>
+<li>实际应用中，通过复杂的数学协议（如椭圆曲线、多项式承诺等）将问题转化为可验证的密码学形式，避免物理交互。</li>
+</ul>
+</li>
+</ol>
+<h2 id="4-非交互式零知识证明（zk-SNARKs-STARKs）"><a href="#4-非交互式零知识证明（zk-SNARKs-STARKs）" class="headerlink" title="4. 非交互式零知识证明（zk-SNARKs&#x2F;STARKs）"></a><strong>4. 非交互式零知识证明（zk-SNARKs&#x2F;STARKs）</strong></h2><p>为适应区块链等场景，发展出<strong>非交互式零知识证明</strong>（如zk-SNARKs）：</p>
+<ul>
+<li><strong>单次提交</strong>：证明者生成一个证明并发送给验证者，无需反复交互。</li>
+<li><strong>关键组件</strong>：<ul>
+<li><strong>可信设置</strong>（zk-SNARKs需要，zk-STARKs不需要）：生成公共参数的过程需安全，避免泄露秘密。</li>
+<li><strong>简洁性</strong>：证明体积小，验证速度快。</li>
+</ul>
+</li>
+<li><strong>示例流程</strong>：<ul>
+<li>证明者将交易数据通过密码学处理生成证明（如zk-SNARK）。</li>
+<li>验证者仅需检查证明的数学有效性，无需查看原始数据。</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-区块链中的应用场景"><a href="#5-区块链中的应用场景" class="headerlink" title="5. 区块链中的应用场景"></a><strong>5. 区块链中的应用场景</strong></h2><ol>
+<li><strong>隐私保护</strong><ul>
+<li><strong>Zcash</strong>：使用zk-SNARKs隐藏交易双方地址和金额，仅证明交易合法。</li>
+<li><strong>Aztec Network</strong>：在以太坊上实现隐私交易，通过零知识证明验证转账有效性。</li>
+</ul>
+</li>
+<li><strong>扩容方案（ZK-Rollup）</strong><ul>
+<li>将大量交易打包到链下处理，生成零知识证明提交至主链。</li>
+<li>主链验证证明后确认所有交易合法，无需逐笔检查，大幅提升吞吐量。</li>
+</ul>
+</li>
+<li><strong>身份验证</strong><ul>
+<li>证明用户拥有某身份（如年龄超过18岁）而无需透露出生日期。</li>
+</ul>
+</li>
+</ol>
+<h1 id="Rollup机制"><a href="#Rollup机制" class="headerlink" title="Rollup机制"></a>Rollup机制</h1><p>为了 去中心化、安全性、可扩展性</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Rollup 是一种 Layer 2 扩容方案，其核心思想是将大量交易的计算和存储从主链（Layer 1）转移到链下处理，仅将关键数据（如交易结果和验证证明）压缩后提交到主链。主要目标是：</span><br><span class="line"></span><br><span class="line">提升吞吐量：减少主链的负载，增加每秒处理交易数（TPS）。</span><br><span class="line">降低费用：通过批量处理交易，分摊 Gas 成本。</span><br><span class="line">保持安全性：依赖主链的共识机制确保最终确定性</span><br></pre></td></tr></table></figure>
+
+<p><strong>ZKP 的解决方案</strong>：</p>
+<ul>
+<li>链下生成一个零知识证明（如 zk-SNARK 或 zk-STARK），证明所有打包的交易是合法的（例如签名正确、余额充足）。</li>
+<li>主链只需验证该证明的合法性，无需重新执行交易，<strong>立即确认结果</strong>，消除等待时间</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/zxcvbn001/BlogPic/img/img/20250326221618547.png"></p>
 
       
 
